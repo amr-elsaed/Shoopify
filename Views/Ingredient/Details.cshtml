@@ -1,0 +1,52 @@
+﻿@using Shoopify.Models.Entities
+@model IEnumerable<Ingredient>
+
+@{
+    ViewBag.Title = "List of Restaurant Ingredients";
+}
+
+<h1 class="mb-4 text-center">🍽️ Ingredients</h1>
+
+<div class="d-flex justify-content-between mb-4">
+    <a asp-action="Index" class="btn btn-secondary">⬅️ Back to List</a>
+    <a asp-action="Create" class="btn btn-success">➕ Add New Ingredient</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var i in Model)
+    {
+        <div class="col">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title">@i.Name</h5>
+
+                    @if (i.ProductIngredients != null && i.ProductIngredients.Any())
+                    {
+                        <div class="mb-2">
+                            <strong>Products:</strong>
+                            <ul class="list-group list-group-flush mt-2">
+                                @foreach (var pi in i.ProductIngredients)
+                                {
+                                    <li class="list-group-item">
+                                        <span class="fw-bold">@pi.Product.Name</span><br />
+                                        <small class="text-muted">@pi.Product.Description</small><br />
+                                        <span class="text-success">💲 @pi.Product.Price</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="card-text text-muted"><em>No related products</em></p>
+                    }
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Update" asp-route-id="@i.IngredientId" class="btn btn-sm btn-warning">✏️ Edit</a>
+                    <a asp-action="Delete" asp-route-id="@i.IngredientId" class="btn btn-sm btn-danger">🗑️ Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
